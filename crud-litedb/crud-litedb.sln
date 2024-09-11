@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "crud-litedb.domain", "crud-litedb.domain\crud-litedb.domain.csproj", "{B0C5BAF6-889A-48E2-B6B3-72A61CBF5EAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "crud-litedb.unittests", "crud-litedb.unittests\crud-litedb.unittests.csproj", "{C9DFD558-2903-4480-B366-19B3F4312A94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0C5BAF6-889A-48E2-B6B3-72A61CBF5EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C5BAF6-889A-48E2-B6B3-72A61CBF5EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C5BAF6-889A-48E2-B6B3-72A61CBF5EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C5BAF6-889A-48E2-B6B3-72A61CBF5EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9DFD558-2903-4480-B366-19B3F4312A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9DFD558-2903-4480-B366-19B3F4312A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9DFD558-2903-4480-B366-19B3F4312A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9DFD558-2903-4480-B366-19B3F4312A94}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
