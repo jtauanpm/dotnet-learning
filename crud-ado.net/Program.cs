@@ -3,23 +3,75 @@ using Microsoft.Data.SqlClient;
 
 const string ConnectionString = "Data Source=localhost;Database=crudadonet;User Id=sa;Password=Passw0rd!;TrustServerCertificate=True;";
 
-// PrintDataWithDataReader();
-// GetDataWithDataSet();
-// GetById(2);
-// InsertProduct("Other Product");
-// UpdateProduct(1, "First Update Product");
-DeleteProductById(3);
+Menu();
 
-static void PrintDataWithDataReader()
+static void Menu()
 {
-    var connection = new SqlConnection(ConnectionString);
+    while (true)
+    {
+        Console.WriteLine("\nChoose an option:");
+        Console.WriteLine("1. List products (DataReader)");
+        Console.WriteLine("2. List products (DataSet)");
+        Console.WriteLine("3. Get product by ID");
+        Console.WriteLine("4. Insert new product");
+        Console.WriteLine("5. Update product");
+        Console.WriteLine("6. Delete product");
+        Console.WriteLine("0. Exit");
 
+        var choice = Console.ReadLine();
+
+        switch (choice)
+        {
+            case "1":
+                GetDataWithDataReader();
+                break;
+            case "2":
+                GetDataWithDataSet();
+                break;
+            case "3":
+                Console.Write("Enter the product ID: ");
+                int idGet = int.Parse(Console.ReadLine());
+                GetById(idGet);
+                break;
+            case "4":
+                Console.Write("Enter the name of the new product: ");
+                string productName = Console.ReadLine();
+                InsertProduct(productName);
+                break;
+            case "5":
+                Console.Write("Enter the ID of the product to update: ");
+                int idUpdate = int.Parse(Console.ReadLine());
+                Console.Write("Enter the new product name: ");
+                string newProductName = Console.ReadLine();
+                UpdateProduct(idUpdate, newProductName);
+                break;
+            case "6":
+                Console.Write("Enter the ID of the product to delete: ");
+                int idDelete = int.Parse(Console.ReadLine());
+                DeleteProductById(idDelete);
+                break;
+            case "0":
+                return;
+            default:
+                Console.WriteLine("Invalid option! Please try again.");
+                break;
+        }
+    }
+}
+
+static SqlConnection GetConnection()
+{
+    return new SqlConnection(ConnectionString);
+}
+
+static void GetDataWithDataReader()
+{
+    using var connection = GetConnection();
     var command = "SELECT * FROM Products";
     var sqlCommand = new SqlCommand(command, connection);
-    sqlCommand.Connection.Open();
 
+    connection.Open();
     var reader = sqlCommand.ExecuteReader();
-
 
     while (reader.Read())
     {
@@ -31,17 +83,14 @@ static void PrintDataWithDataReader()
 
 static void GetDataWithDataSet()
 {
-    var connection = new SqlConnection(ConnectionString);
-
+    using var connection = GetConnection();
     connection.Open();
 
     var dataAdapter = new SqlDataAdapter("SELECT * FROM Products", connection);
     var dataSet = new DataSet();
-
     dataAdapter.Fill(dataSet);
 
     var productsTable = dataSet.Tables[0];
-
     PrintColumnNames(productsTable.Columns);
 
     foreach (DataRow row in productsTable.Rows)
@@ -58,8 +107,7 @@ static void GetDataWithDataSet()
 
 static void GetById(int id)
 {
-    var connection = new SqlConnection(ConnectionString);
-
+    using var connection = GetConnection();
     connection.Open();
 
     var query = "SELECT * FROM Products WHERE Id = @Id";
@@ -70,7 +118,6 @@ static void GetById(int id)
     dataAdapter.Fill(dataSet);
 
     var productsTable = dataSet.Tables[0];
-
     PrintColumnNames(productsTable.Columns);
 
     DataRow row = productsTable.Rows[0];
@@ -85,15 +132,12 @@ static void GetById(int id)
 
 static void InsertProduct(string name)
 {
-    var connection = new SqlConnection(ConnectionString);
+    using var connection = GetConnection();
     var commandText = "INSERT INTO Products (Name) VALUES (@Name)";
+    var command = new SqlCommand(commandText, connection);
 
-    var command = new SqlCommand(commandText, connection)
-    {
-        CommandType = CommandType.Text
-    };
     command.Parameters.AddWithValue("@Name", name);
-    command.Connection.Open();
+    connection.Open();
     command.ExecuteNonQuery();
 
     connection.Close();
@@ -101,36 +145,28 @@ static void InsertProduct(string name)
 
 static void UpdateProduct(int id, string name)
 {
-    var connection = new SqlConnection(ConnectionString);
+    using var connection = GetConnection();
     var commandText = "UPDATE Products SET Name = @Name WHERE Id = @Id";
+    var command = new SqlCommand(commandText, connection);
 
-    var command = new SqlCommand(commandText, connection)
-    {
-        CommandType = CommandType.Text
-    };
     command.Parameters.AddWithValue("@Id", id);
     command.Parameters.AddWithValue("@Name", name);
 
-    command.Connection.Open();
+    connection.Open();
     command.ExecuteNonQuery();
-
     connection.Close();
 }
 
 static void DeleteProductById(int id)
 {
-    var connection = new SqlConnection(ConnectionString);
+    using var connection = GetConnection();
     var commandText = "DELETE FROM Products WHERE Id = @Id";
+    var command = new SqlCommand(commandText, connection);
 
-    var command = new SqlCommand(commandText, connection)
-    {
-        CommandType = CommandType.Text
-    };
     command.Parameters.AddWithValue("@Id", id);
 
-    command.Connection.Open();
+    connection.Open();
     command.ExecuteNonQuery();
-
     connection.Close();
 }
 
