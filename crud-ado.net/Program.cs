@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
-const string ConnectionString = "Data Source=localhost;Database=crudadonet;User Id=sa;Password=Passw0rd!;TrustServerCertificate=True;";
+const string ConnectionString = "Data Source=localhost;Database=CrudProducts;User Id=sa;Password=Passw0rd!;TrustServerCertificate=True;";
 
 Menu();
 
