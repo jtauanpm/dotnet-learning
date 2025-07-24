@@ -17,8 +17,13 @@ public class ApplicationContext : DbContext
         optionsBuilder
             .UseLoggerFactory(_loggerFactory)
             .EnableSensitiveDataLogging()
-            //TODO: place it on a secret store
-            .UseSqlServer();
+            //TODO: place connectionString on a secret store
+            .UseSqlServer("Server=localhost,1433;Database=Desenvolvedor_IO;User Id=sa;Password=Jordanna123.;Encrypt=False;",
+                opt => opt.EnableRetryOnFailure(
+                    maxRetryCount: 2, 
+                    maxRetryDelay: TimeSpan.FromSeconds(5), 
+                    errorNumbersToAdd: null).MigrationsHistoryTable("NomeTabelaMigrations", "schema")
+                );
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
