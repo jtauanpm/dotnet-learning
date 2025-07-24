@@ -17,7 +17,7 @@ public class ApplicationContext : DbContext
             .UseLoggerFactory(_loggerFactory)
             .EnableSensitiveDataLogging()
             //TODO: place connectionString on a secret store
-            .UseSqlServer("Server=localhost,1433;Database=Desenvolvedor_IO;User Id=sa;Password=Jordanna123.;Encrypt=False;",
+            .UseSqlServer("",
                 opt => opt.EnableRetryOnFailure(
                     maxRetryCount: 2, 
                     maxRetryDelay: TimeSpan.FromSeconds(5), 
