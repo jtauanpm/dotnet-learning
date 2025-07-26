@@ -1,3 +1,4 @@
+using DevIO.IntroducaoEfCore.App.Configuration;
 using DevIO.IntroducaoEfCore.App.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,21 +14,22 @@ public class ApplicationContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        var connectionString = Settings.Configuration["ConnectionString"];
+        
         optionsBuilder
             .UseLoggerFactory(_loggerFactory)
             .EnableSensitiveDataLogging()
-            //TODO: place connectionString on a secret store
-            .UseSqlServer("",
+            .UseSqlServer(connectionString,
                 opt => opt.EnableRetryOnFailure(
                     maxRetryCount: 2, 
                     maxRetryDelay: TimeSpan.FromSeconds(5), 
-                    errorNumbersToAdd: null).MigrationsHistoryTable("NomeTabelaMigrations", "schema")
+                    errorNumbersToAdd: null)
+                    .MigrationsHistoryTable("NomeTabelaMigrations", "schema")
                 );
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //TODO: Estudar e anotar sobre Assembly
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
         MapearPropriedadesEsquecidas(modelBuilder);
     }
