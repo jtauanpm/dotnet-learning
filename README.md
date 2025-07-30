@@ -7,3 +7,4 @@ Repository dedicated to learning databases, ORMs, persistence tools and data man
 - **Dapper**: High-performance micro-ORM.
 - **LiteDB**: Embedded NoSQL database for .NET.
 - **SQLite**: Lightweight file-based SQL database.
+- **EF Core**: Lightweight, extensible, and cross-platform version of Entity Framework (EF) for .NET.
