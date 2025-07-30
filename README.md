@@ -1,5 +1,5 @@
-# Data manipulation with .NET C#
-Repository dedicated to learning databases, ORMs, persistence tools and data manipulation with .NET.
+## .NET and C# studies and practices
+This is a generic repository that brings together my studies and practical projects related to the .NET ecosystem, covering topics such as data persistence, ASP.NET Core, APIs, application architecture, among other topics.
 
 ### Technologies already studied
 
