@@ -3,30 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 namespace DevIO.PrimeiraApi.App.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/minha-controller")]
+// [Route("[controller]")] utiliza nome da classe como recurso, ex: WeatherForecast
 public class WeatherForecastController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
+    // [Route("")] Pode ser usado para definir rotas em métodos
+    [HttpGet("teste")]
+    public IActionResult Get()
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
-    {
-        _logger = logger;
+        return Ok();
     }
-
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    
+    // Constraints para parâmetros de rota: 
+    // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-9.0#route-constraints
+    // Parâmetros de rota
+    [HttpGet("{id:int}/dado/{id2:int}")]
+    public IActionResult Get(int id, int id2)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        return Ok();
     }
 }
