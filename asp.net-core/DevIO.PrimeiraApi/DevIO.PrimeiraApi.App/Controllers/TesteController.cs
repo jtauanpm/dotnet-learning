@@ -7,35 +7,44 @@ namespace DevIO.PrimeiraApi.App.Controllers;
 [Route("demo")]
 public class TesteController : ControllerBase
 {
-     [HttpGet]
-     public IActionResult Get()
-     {
-          return Ok(new Produto {Id = 1, Nome = "Teste"});
-     }
+    [HttpGet]
+    [ProducesResponseType<Produto>(statusCode: StatusCodes.Status200OK)]
+    public IActionResult Get()
+    {
+        return Ok(new Produto {Id = 1, Nome = "Teste"});
+    }
      
-     [HttpGet("{id:int}")]
-     public IActionResult Get(int id)
-     {
-          return Ok(new Produto {Id = 1, Nome = "Teste"});
-     }
+    [HttpGet("{id:int}")]
+    [ProducesResponseType<Produto>(statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+    public IActionResult Get(int id)
+    {
+        return Ok(new Produto {Id = 1, Nome = "Teste"});
+    }
      
-     [HttpPost]
-     public IActionResult Post([FromBody] Produto produto)
-     {
-          return CreatedAtAction("Get", new { Id = produto.Id }, produto);
-     }
+    [HttpPost]
+    [ProducesResponseType<Produto>(statusCode: StatusCodes.Status201Created)]
+    [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+    public IActionResult Post([FromBody] Produto produto)
+    {
+        return CreatedAtAction("Get", new { produto.Id }, produto);
+    }
 
-     [HttpPut("{id:int}")]
-     public IActionResult Put(int id, [FromBody] Produto produto)
-     {
-          if(id != produto.Id) return BadRequest();
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+    [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+    public IActionResult Put(int id, [FromBody] Produto produto)
+    {
+        if(id != produto.Id) return BadRequest();
 
-          return NoContent();
-     }
+        return NoContent();
+    }
 
-     [HttpDelete("{id:int}")]
-     public IActionResult Delete(int id)
-     {
-          return NoContent();
-     }
+    [HttpDelete("{id:int}")]
+
+    [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+    public IActionResult Delete(int id)
+    {
+        return NoContent();
+    }
 }
