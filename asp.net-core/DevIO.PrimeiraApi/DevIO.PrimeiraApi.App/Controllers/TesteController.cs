@@ -41,7 +41,7 @@ public class TesteController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-
+    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
     [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
     public IActionResult Delete(int id)
     {
