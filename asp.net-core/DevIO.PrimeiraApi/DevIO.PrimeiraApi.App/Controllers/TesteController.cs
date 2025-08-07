@@ -4,16 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 namespace DevIO.PrimeiraApi.App.Controllers;
 
 [ApiController]
-[Route("demo")]
+[Route("api/demo")]
+// [Route("[controller]")] utiliza nome da classe como recurso, ex: Teste
 public class TesteController : ControllerBase
 {
+    
     [HttpGet]
+    // [Route("")] também pode ser usado para definir rotas em métodos
     [ProducesResponseType<Produto>(statusCode: StatusCodes.Status200OK)]
     public IActionResult Get()
     {
         return Ok(new Produto {Id = 1, Nome = "Teste"});
     }
-     
+    
+    // Constraints para parâmetros de rota: 
+    // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-9.0#route-constraints
+    // Parâmetros de rota
     [HttpGet("{id:int}")]
     [ProducesResponseType<Produto>(statusCode: StatusCodes.Status200OK)]
     [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
@@ -31,8 +37,7 @@ public class TesteController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
-    [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
     public IActionResult Put(int id, [FromBody] Produto produto)
     {
         if(id != produto.Id) return BadRequest();
