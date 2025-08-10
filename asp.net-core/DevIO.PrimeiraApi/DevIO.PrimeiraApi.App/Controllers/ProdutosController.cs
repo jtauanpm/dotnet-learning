@@ -30,6 +30,9 @@ public class ProdutosController : ControllerBase
     }
     
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary), StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult<Produto>> PostProduto(Produto produto)
     {
         if (!ModelState.IsValid)
@@ -54,22 +57,44 @@ public class ProdutosController : ControllerBase
     }
     
     [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult<Produto>> PutProduto(int id, Produto produto)
     {
         if (id != produto.Id) return BadRequest();
         
         if(!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        _context.Entry(produto).State = EntityState.Modified;
         
-        _context.Produtos.Update(produto);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException e)
+        {
+            if (await _context.Produtos.FirstOrDefaultAsync(p => p.Id == produto.Id) is null)
+            {
+                return NotFound();
+            }
+
+            throw;
+        }
         
         return NoContent();
     }
     
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult<Produto>> DeleteProduto(int id)
     {
         var produto = await _context.Produtos.FindAsync(id);
+        
+        if (produto == null) return NotFound();
         
         _context.Produtos.Remove(produto);
         await _context.SaveChangesAsync();
