@@ -1,6 +1,10 @@
+using System.Text;
+using DevIO.PrimeiraApi.App.DTOs;
 using DevIO.PrimeiraApi.App.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +27,34 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApiDbContext>();
+
+var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
+
+// Registra a seção como configuração tipada (classe JwtSettings)
+// Isso permite injetar IOptions<JwtSettings> em outros lugares da aplicação
+builder.Services.Configure<JwtSettings>(jwtSettingsSection);
+
+// TODO: extract extension method 
+var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+var key = Encoding.ASCII.GetBytes(jwtSettings.Segredo);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = jwtSettings.Audiencia,
+        ValidIssuer = jwtSettings.Emissor
+    };
+});
 
 var app = builder.Build();
 
