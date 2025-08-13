@@ -1,9 +1,11 @@
 using DevIO.PrimeiraApi.App.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevIO.PrimeiraApi.App.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/produtos")]
 public class ProdutosController : ControllerBase
@@ -15,6 +17,7 @@ public class ProdutosController : ControllerBase
         _context = context;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
     {
@@ -86,6 +89,7 @@ public class ProdutosController : ControllerBase
         return NoContent();
     }
     
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
