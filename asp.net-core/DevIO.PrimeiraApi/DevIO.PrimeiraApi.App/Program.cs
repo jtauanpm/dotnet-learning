@@ -17,6 +17,12 @@ builder.Services.AddControllers()
         // options.SuppressModelStateInvalidFilter = true;
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Development", devBuilder => devBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("Production", prodBuilder => prodBuilder.WithOrigins("https://localhost:9000").WithMethods("POST").AllowAnyHeader());
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -91,9 +97,15 @@ if (app.Environment.IsDevelopment())
     
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    app.UseCors("Development");
+}
+else
+{
+    app.UseCors("Production");
 }
 
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
