@@ -1,4 +1,4 @@
-namespace DevIO.IntroducaoEfCore.App.ValueObjects
+namespace DevIO.EfCore.Introducao.ValueObjects
 {
     public enum StatusPedido
     {

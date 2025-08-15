@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DevIO.IntroducaoEfCore.App.Migrations
+namespace DevIO.EfCore.Introducao.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

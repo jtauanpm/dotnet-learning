@@ -1,5 +1,5 @@
 ﻿-- Created with 
--- dotnet-ef migrations script -p DevIO.IntroducaoEfCore.App/DevIO.IntroducaoEfCore.App.csproj -o DevIO.IntroducaoEfCore.App/PrimeiraMigracao.SQL
+-- dotnet-ef migrations script -p DevIO.EfCore.Introducao/DevIO.EfCore.Introducao.csproj -o DevIO.EfCore.Introducao/PrimeiraMigracao.SQL
 IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (

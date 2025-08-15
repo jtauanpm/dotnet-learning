@@ -1,8 +1,8 @@
-using DevIO.IntroducaoEfCore.App.Domain;
+using DevIO.EfCore.Introducao.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DevIO.IntroducaoEfCore.App.Data.Configurations;
+namespace DevIO.EfCore.Introducao.Data.Configurations;
 
 public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
 {

@@ -1,9 +1,9 @@
-using DevIO.IntroducaoEfCore.App.Configuration;
-using DevIO.IntroducaoEfCore.App.Domain;
+using DevIO.EfCore.Introducao.Configuration;
+using DevIO.EfCore.Introducao.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace DevIO.IntroducaoEfCore.App.Data;
+namespace DevIO.EfCore.Introducao.Data;
 
 public class ApplicationContext : DbContext
 {

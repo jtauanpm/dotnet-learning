@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevIO.IntroducaoEfCore.App.Domain;
+namespace DevIO.EfCore.Introducao.Domain;
 
 [Table("Clientes")]
 public class Cliente

@@ -1,6 +1,6 @@
-using DevIO.IntroducaoEfCore.App.ValueObjects;
+using DevIO.EfCore.Introducao.ValueObjects;
 
-namespace DevIO.IntroducaoEfCore.App.Domain;
+namespace DevIO.EfCore.Introducao.Domain;
 
 public class Produto
 {

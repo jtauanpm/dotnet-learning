@@ -1,9 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using DevIO.IntroducaoEfCore.App.Configuration;
-using DevIO.IntroducaoEfCore.App.Data;
-using DevIO.IntroducaoEfCore.App.Domain;
-using DevIO.IntroducaoEfCore.App.ValueObjects;
+using DevIO.EfCore.Introducao.Configuration;
+using DevIO.EfCore.Introducao.Data;
+using DevIO.EfCore.Introducao.Domain;
+using DevIO.EfCore.Introducao.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

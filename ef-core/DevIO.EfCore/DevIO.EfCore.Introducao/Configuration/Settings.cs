@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace DevIO.IntroducaoEfCore.App.Configuration;
+namespace DevIO.EfCore.Introducao.Configuration;
 
 public static class Settings
 {
