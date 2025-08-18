@@ -14,7 +14,7 @@ public class ApplicationContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = Settings.Configuration["ConnectionString"];
+        var connectionString = Settings.Configuration["Dev_IO_EfCore_Introducao"];
         
         optionsBuilder
             .UseLoggerFactory(_loggerFactory)
