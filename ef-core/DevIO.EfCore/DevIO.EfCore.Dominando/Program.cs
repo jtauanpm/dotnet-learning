@@ -2,13 +2,15 @@
 
 using DevIO.EfCore.Dominando.Configuration;
 using DevIO.EfCore.Dominando.Data;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 
 Settings.Configuration = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .Build();
 
-EnsureCreatedAndDeleted();
+GapDoEnsureCreated();
 return;
 
 static void EnsureCreatedAndDeleted()
@@ -17,6 +19,18 @@ static void EnsureCreatedAndDeleted()
     db.Database.EnsureCreated();
 
     db.Database.EnsureDeleted();
+}
+
+static void GapDoEnsureCreated()
+{
+    using var dbContext = new ApplicationDbContext();
+    using var dbCidades = new ApplicationDbContextCidade();
+    
+    dbContext.Database.EnsureCreated();
+    dbCidades.Database.EnsureCreated();
+
+    var databaseCreate = dbCidades.GetService<IRelationalDatabaseCreator>();
+    databaseCreate.CreateTables();
 }
 
 
