@@ -2,6 +2,7 @@
 
 using DevIO.EfCore.Dominando.Configuration;
 using DevIO.EfCore.Dominando.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,9 @@ Settings.Configuration = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .Build();
 
-GapDoEnsureCreated();
+// EnsureCreatedAndDeleted();
+// GapDoEnsureCreated();
+HealthCheckBancoDeDados();
 return;
 
 static void EnsureCreatedAndDeleted()
@@ -31,6 +34,14 @@ static void GapDoEnsureCreated()
 
     var databaseCreate = dbCidades.GetService<IRelationalDatabaseCreator>();
     databaseCreate.CreateTables();
+}
+
+static void HealthCheckBancoDeDados()
+{
+    using var dbContext = new ApplicationDbContext();
+    
+    var canConnect = dbContext.Database.CanConnect();
+    Console.WriteLine($"Can connect to database: {canConnect}");
 }
 
 
