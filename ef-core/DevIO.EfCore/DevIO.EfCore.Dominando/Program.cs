@@ -80,3 +80,20 @@ static void GerenciarEstadoDaConexao(bool gerenciarEstadoConexao)
     
     Console.WriteLine(mensagem);
 }
+
+static void ExecuteSql()
+{
+    using var dbContext = new ApplicationDbContext();
+    
+    // 1st option
+    using var cmd = dbContext.Database.GetDbConnection().CreateCommand();
+    cmd.CommandText = "SELECT 1";
+    cmd.ExecuteNonQuery();
+    
+    // 2nd option
+    var descricao = "TESTE";
+    dbContext.Database.ExecuteSqlRaw("UPDATE Departamentos SET Descricao = {0} WHERE Id = 1", descricao);
+    
+    // 3rd option
+    dbContext.Database.ExecuteSqlInterpolated($"UPDATE Departamentos SET Descricao = {descricao} WHERE Id = 1");
+}   
