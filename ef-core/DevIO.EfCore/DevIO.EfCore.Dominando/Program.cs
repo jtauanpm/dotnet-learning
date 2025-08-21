@@ -7,11 +7,6 @@ using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Configuration;
-
-Settings.Configuration = new ConfigurationBuilder()
-    .AddUserSecrets<Program>()
-    .Build();
 
 // EnsureCreatedAndDeleted();
 // GapDoEnsureCreated();
