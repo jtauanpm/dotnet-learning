@@ -8,7 +8,7 @@ namespace DevIO.EfCore.Dominando.Data;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Departamento> Departamentos { get; set; }
-    public DbSet<Departamento> Funcionarios { get; set; }
+    public DbSet<Funcionario> Funcionarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext
 
         optionsBuilder.UseSqlServer(connString)
             .EnableSensitiveDataLogging()
-            .LogTo(Console.WriteLine, LogLevel.Warning);
+            .LogTo(Console.WriteLine, LogLevel.Information);
         
         base.OnConfiguring(optionsBuilder);
     }
