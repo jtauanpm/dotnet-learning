@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext
 
         optionsBuilder.UseSqlServer(connString)
             .EnableSensitiveDataLogging()
-            .LogTo(Console.WriteLine, LogLevel.Information);
+            .LogTo(Console.WriteLine, LogLevel.Warning);
         
         base.OnConfiguring(optionsBuilder);
     }

@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics;
 using DevIO.EfCore.Dominando.Configuration;
 using DevIO.EfCore.Dominando.Data;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,9 @@ Settings.Configuration = new ConfigurationBuilder()
 
 // EnsureCreatedAndDeleted();
 // GapDoEnsureCreated();
-HealthCheckBancoDeDados();
+// HealthCheckBancoDeDados();
+GerenciarEstadoDaConexao(false);
+GerenciarEstadoDaConexao(true);
 return;
 
 static void EnsureCreatedAndDeleted()
@@ -44,4 +47,36 @@ static void HealthCheckBancoDeDados()
     Console.WriteLine($"Can connect to database: {canConnect}");
 }
 
+static void GerenciarEstadoDaConexao(bool gerenciarEstadoConexao)
+{
+    // warmup
+    new ApplicationDbContext().Departamentos.AsNoTracking().Any();
 
+    var count = 0;
+    using var dbContext = new ApplicationDbContext();
+    var time = Stopwatch.StartNew();
+    
+    var conexao = dbContext.Database.GetDbConnection();
+    
+    conexao.StateChange += (_, _) => ++count;
+    
+    if (gerenciarEstadoConexao)
+    {
+        conexao.Open();
+    }
+
+    for (var i = 0; i < 200; i++)
+    {
+        dbContext.Departamentos.AsNoTracking().Any();
+    }
+    
+    if (gerenciarEstadoConexao)
+    {
+        conexao.Close();
+    }
+    
+    time.Stop();
+    var mensagem = $"Tempo: {time.Elapsed}, Estado gerenciado: {gerenciarEstadoConexao}, Contador: {count}";
+    
+    Console.WriteLine(mensagem);
+}
