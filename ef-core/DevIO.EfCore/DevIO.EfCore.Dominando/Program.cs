@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using DevIO.EfCore.Dominando.Configuration;
 using DevIO.EfCore.Dominando.Data;
+using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -15,8 +16,10 @@ Settings.Configuration = new ConfigurationBuilder()
 // EnsureCreatedAndDeleted();
 // GapDoEnsureCreated();
 // HealthCheckBancoDeDados();
-GerenciarEstadoDaConexao(false);
-GerenciarEstadoDaConexao(true);
+// GerenciarEstadoDaConexao(false);
+// GerenciarEstadoDaConexao(true);
+
+SqlInjection();
 return;
 
 static void EnsureCreatedAndDeleted()
@@ -96,4 +99,31 @@ static void ExecuteSql()
     
     // 3rd option
     dbContext.Database.ExecuteSqlInterpolated($"UPDATE Departamentos SET Descricao = {descricao} WHERE Id = 1");
-}   
+}
+
+static void SqlInjection()
+{
+    using var dbContext = new ApplicationDbContext();
+    dbContext.Database.EnsureDeleted();
+    dbContext.Database.EnsureCreated();
+    
+    dbContext.Departamentos.AddRange(
+        new Departamento
+        {
+            Descricao = "Departamento 01"
+        },
+        new Departamento
+        {
+            Descricao = "Departamento 02"
+        });
+    dbContext.SaveChanges();
+    
+    // SQL Injection
+    var descricao = "Teste' or 1= '1";
+    dbContext.Database.ExecuteSqlRaw($"UPDATE Departamentos SET Descricao = 'AtaqueSqlInjection' WHERE Descricao = '{descricao}'");
+    
+    foreach (var departamento in dbContext.Departamentos.AsNoTracking())
+    {
+        Console.WriteLine($"Id: {departamento.Id}, Descricao: {departamento.Descricao}");
+    }
+}
