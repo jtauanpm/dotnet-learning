@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Diagnostics;
-using DevIO.EfCore.Dominando.Configuration;
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 // HealthCheckBancoDeDados();
 // GerenciarEstadoDaConexao(false);
 // GerenciarEstadoDaConexao(true);
+// SqlInjection();
 
-SqlInjection();
+// MigracoesPendentes();
+// AplicandoMigracaoEmTempoDeExecucao();
+// MigracoesPendentes();
+
+TodasMigracoes();
 return;
 
 static void EnsureCreatedAndDeleted()
@@ -120,5 +124,37 @@ static void SqlInjection()
     foreach (var departamento in dbContext.Departamentos.AsNoTracking())
     {
         Console.WriteLine($"Id: {departamento.Id}, Descricao: {departamento.Descricao}");
+    }
+}
+
+static void MigracoesPendentes()
+{
+    using var dbContext = new ApplicationDbContext();
+    var migracoesPendentes =  dbContext.Database.GetPendingMigrations().ToList();
+    
+    Console.WriteLine($"Total: {migracoesPendentes.Count}");
+
+    foreach (var migracao in migracoesPendentes)
+    {
+        Console.WriteLine(migracao);
+    }
+}
+
+static void AplicandoMigracaoEmTempoDeExecucao()
+{
+    using var dbContext = new ApplicationDbContext();
+    dbContext.Database.Migrate();
+}
+
+static void TodasMigracoes()
+{
+    using var dbContext = new ApplicationDbContext();
+    var migracoes = dbContext.Database.GetMigrations().ToList();
+    
+    Console.WriteLine($"Total: {migracoes}");
+
+    foreach (var migracao in migracoes)
+    {
+        Console.WriteLine($"Migração: {migracao}");
     }
 }
