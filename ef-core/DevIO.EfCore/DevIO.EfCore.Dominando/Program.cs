@@ -17,8 +17,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 // MigracoesPendentes();
 // AplicandoMigracaoEmTempoDeExecucao();
 // MigracoesPendentes();
-
-TodasMigracoes();
+// TodasMigracoes();
+MigracoesJaAplicadas();
 return;
 
 static void EnsureCreatedAndDeleted()
@@ -152,6 +152,19 @@ static void TodasMigracoes()
     var migracoes = dbContext.Database.GetMigrations().ToList();
     
     Console.WriteLine($"Total: {migracoes}");
+
+    foreach (var migracao in migracoes)
+    {
+        Console.WriteLine($"Migração: {migracao}");
+    }
+}
+
+static void MigracoesJaAplicadas()
+{
+    using var dbContext = new ApplicationDbContext();
+    var migracoes = dbContext.Database.GetAppliedMigrations().ToList();
+    
+    Console.WriteLine($"Total: {migracoes.Count}");
 
     foreach (var migracao in migracoes)
     {
