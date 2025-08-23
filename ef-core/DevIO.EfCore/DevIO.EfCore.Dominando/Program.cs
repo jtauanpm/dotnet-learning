@@ -18,7 +18,9 @@ using Microsoft.EntityFrameworkCore.Storage;
 // AplicandoMigracaoEmTempoDeExecucao();
 // MigracoesPendentes();
 // TodasMigracoes();
-MigracoesJaAplicadas();
+// MigracoesJaAplicadas();
+
+ScriptGeralBancoDeDados();
 return;
 
 static void EnsureCreatedAndDeleted()
@@ -170,4 +172,11 @@ static void MigracoesJaAplicadas()
     {
         Console.WriteLine($"Migração: {migracao}");
     }
+}
+
+static void ScriptGeralBancoDeDados()
+{
+    using var dbContext = new ApplicationDbContext();
+    var script = dbContext.Database.GenerateCreateScript();
+    Console.WriteLine(script);
 }
