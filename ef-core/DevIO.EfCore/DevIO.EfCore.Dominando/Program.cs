@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
+using DevIO.EfCore.Dominando.Samples;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -14,11 +15,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 // GerenciarEstadoDaConexao(true);
 // SqlInjection();
 
-// MigracoesPendentes();
-// AplicandoMigracaoEmTempoDeExecucao();
-// MigracoesPendentes();
-// TodasMigracoes();
-// MigracoesJaAplicadas();
+// MigrationManagementSamples.MigracoesPendentes();
+// MigrationManagementSamples.AplicandoMigracaoEmTempoDeExecucao();
+// MigrationManagementSamples.MigracoesPendentes();
+// MigrationManagementSamples.TodasMigracoes();
+// MigrationManagementSamples.MigracoesJaAplicadas();
 
 ScriptGeralBancoDeDados();
 return;

@@ -5,7 +5,7 @@ namespace DevIO.EfCore.Dominando.Samples;
 
 public static class MigrationManagementSamples
 {
-    static void MigracoesPendentes()
+    public static void MigracoesPendentes()
     {
         using var dbContext = new ApplicationDbContext();
         var migracoesPendentes =  dbContext.Database.GetPendingMigrations().ToList();
@@ -18,13 +18,13 @@ public static class MigrationManagementSamples
         }
     }
 
-    static void AplicandoMigracaoEmTempoDeExecucao()
+    public static void AplicandoMigracaoEmTempoDeExecucao()
     {
         using var dbContext = new ApplicationDbContext();
         dbContext.Database.Migrate();
     }
 
-    static void TodasMigracoes()
+    public static void TodasMigracoes()
     {
         using var dbContext = new ApplicationDbContext();
         var migracoes = dbContext.Database.GetMigrations().ToList();
@@ -37,7 +37,7 @@ public static class MigrationManagementSamples
         }
     }
 
-    static void MigracoesJaAplicadas()
+    public static void MigracoesJaAplicadas()
     {
         using var dbContext = new ApplicationDbContext();
         var migracoes = dbContext.Database.GetAppliedMigrations().ToList();
