@@ -6,6 +6,39 @@ namespace DevIO.EfCore.Dominando.Samples;
 
 public class LoadingTypesSamples
 {
+    public static void CarregamentoExplicito()
+    {
+        using var db = new ApplicationDbContext();
+        SetupTiposCarregamentos(db);
+
+        var departamentos = db
+            .Departamentos;
+
+        foreach (var departamento in departamentos)
+        {
+            if (departamento.Id == 2)
+            {
+                // db.Entry(departamento).Collection(d => d.Funcionarios).Load();
+                db.Entry(departamento).Collection(d => d.Funcionarios).Query().Where(p => p.Id > 2).Load();
+            }
+            
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine($"Departamento: {departamento.Descricao}");
+
+            if (departamento.Funcionarios?.Any() ?? false)
+            {
+                foreach (var funcionario in departamento.Funcionarios)
+                {
+                    Console.WriteLine($"\tFuncionario: {funcionario.Nome}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\tNenhum funcionario encontrado!");
+            }
+        }
+    }
+    
     public static void CarregamentoAdiantado()
     {
         using var db = new ApplicationDbContext();
