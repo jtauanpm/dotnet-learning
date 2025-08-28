@@ -6,6 +6,35 @@ namespace DevIO.EfCore.Dominando.Samples;
 
 public class LoadingTypesSamples
 {
+    public static void CarregamentoLento()
+    {
+        using var db = new ApplicationDbContext();
+        SetupTiposCarregamentos(db);
+        
+        // db.ChangeTracker.LazyLoadingEnabled = false;
+
+        var departamentos = db
+            .Departamentos;
+
+        foreach (var departamento in departamentos)
+        {
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine($"Departamento: {departamento.Descricao}");
+
+            if (departamento.Funcionarios?.Any() ?? false)
+            {
+                foreach (var funcionario in departamento.Funcionarios)
+                {
+                    Console.WriteLine($"\tFuncionario: {funcionario.Nome}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\tNenhum funcionario encontrado!");
+            }
+        }
+    }
+    
     public static void CarregamentoExplicito()
     {
         using var db = new ApplicationDbContext();

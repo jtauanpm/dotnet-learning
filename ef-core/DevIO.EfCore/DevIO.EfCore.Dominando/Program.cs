@@ -24,7 +24,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 // ScriptGeralBancoDeDados();
 
 // LoadingTypesSamples.CarregamentoAdiantado();
-LoadingTypesSamples.CarregamentoExplicito();
+// LoadingTypesSamples.CarregamentoExplicito();
+LoadingTypesSamples.CarregamentoLento();
 return;
 
 static void EnsureCreatedAndDeleted()

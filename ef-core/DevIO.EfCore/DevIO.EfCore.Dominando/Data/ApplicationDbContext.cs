@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
 
         optionsBuilder.UseSqlServer(connString)
             .EnableSensitiveDataLogging()
+            // .UseLazyLoadingProxies()
             .LogTo(Console.WriteLine, LogLevel.Information);
         
         base.OnConfiguring(optionsBuilder);
