@@ -7,8 +7,13 @@ public class Departamento
     public int Id { get; set; }
     public string Descricao { get; set; }
     public bool Ativo { get; set; }
+    public bool Excluido { get; set; }
     public virtual List<Funcionario> Funcionarios { get; set; }
 
+    public override string ToString()
+    {
+        return $"Id: {Id}, Descricao: {Descricao} \t Excluido: {Excluido}";
+    }
 
     #region Lazy loading configurations
 
@@ -51,4 +56,4 @@ public class Departamento
     */
 
     #endregion
-    }
+}
