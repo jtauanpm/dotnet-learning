@@ -20,4 +20,11 @@ public class ApplicationDbContext : DbContext
         
         base.OnConfiguring(optionsBuilder);
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
+    }
 }
