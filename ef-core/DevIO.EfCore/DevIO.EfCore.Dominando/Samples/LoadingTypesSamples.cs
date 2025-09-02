@@ -1,5 +1,6 @@
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
+using DevIO.EfCore.Dominando.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevIO.EfCore.Dominando.Samples;
@@ -9,9 +10,9 @@ public class LoadingTypesSamples
     public static void CarregamentoLento()
     {
         using var db = new ApplicationDbContext();
-        SetupTiposCarregamentos(db);
+        Utils.SetupData(db);
         
-        // db.ChangeTracker.LazyLoadingEnabled = false;
+        // db.ChangeTracker.LazyLoadingEnabled = false; // Desabilita LazyLoading iperativamente
 
         var departamentos = db
             .Departamentos;
@@ -38,7 +39,7 @@ public class LoadingTypesSamples
     public static void CarregamentoExplicito()
     {
         using var db = new ApplicationDbContext();
-        SetupTiposCarregamentos(db);
+        Utils.SetupData(db);
 
         var departamentos = db
             .Departamentos;
@@ -71,7 +72,7 @@ public class LoadingTypesSamples
     public static void CarregamentoAdiantado()
     {
         using var db = new ApplicationDbContext();
-        SetupTiposCarregamentos(db);
+        Utils.SetupData(db);
 
         var departamentos = db
             .Departamentos
@@ -94,49 +95,5 @@ public class LoadingTypesSamples
                 Console.WriteLine($"\tNenhum funcionario encontrado!");
             }
         }
-    }
-
-    static void SetupTiposCarregamentos(ApplicationDbContext db)
-    {
-        if (db.Departamentos.Any()) 
-            return;
-    
-        db.Departamentos.AddRange(
-            new Departamento
-            {
-                Descricao = "Departamento 01",
-                Funcionarios =
-                [
-                    new()
-                    {
-                        Nome = "Rafael Almeida",
-                        CPF = "99999999911",
-                        RG = "2100062"
-                    }
-                ]
-            },
-            new Departamento
-            {
-                Descricao = "Departamento 02",
-                Funcionarios =
-                [
-                    new()
-                    {
-                        Nome = "Bruno Brito",
-                        CPF = "88888888811",
-                        RG = "3100062"
-                    },
-
-                    new()
-                    {
-                        Nome = "Eduardo Pires",
-                        CPF = "77777777711",
-                        RG = "1100062"
-                    }
-                ]
-            });
-
-        db.SaveChanges();
-        db.ChangeTracker.Clear();
     }
 }
