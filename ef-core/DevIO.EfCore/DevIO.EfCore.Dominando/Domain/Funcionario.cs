@@ -1,12 +1,16 @@
-namespace DevIO.EfCore.Dominando.Domain
+namespace DevIO.EfCore.Dominando.Domain;
+
+public class Funcionario
 {
-    public class Funcionario
+    public int Id { get; set; }
+    public string Nome { get; set; }
+    public string CPF { get; set; }
+    public string RG { get; set; }
+    public int DeparmentoId { get; set; }
+    public virtual Departamento Departamento { get; set; }
+
+    public override string ToString()
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string CPF { get; set; }
-        public string RG { get; set; }
-        public int DeparmentoId { get; set; }
-        public virtual Departamento Departamento { get; set; }
+        return $"Nome: {Nome}";
     }
 }

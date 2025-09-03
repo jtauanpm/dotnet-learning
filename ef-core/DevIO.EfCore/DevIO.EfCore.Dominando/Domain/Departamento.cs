@@ -8,7 +8,7 @@ public class Departamento
     public string Descricao { get; set; }
     public bool Ativo { get; set; }
     public bool Excluido { get; set; }
-    public virtual List<Funcionario> Funcionarios { get; set; }
+    public List<Funcionario> Funcionarios { get; set; }
 
     public override string ToString()
     {
