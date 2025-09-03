@@ -8,6 +8,29 @@ namespace DevIO.EfCore.Dominando.Samples;
 
 public class QuerySamples
 {
+    public static void DivisaoConsultas()
+    {
+        using var dbContext = new ApplicationDbContext();
+        Utils.SetupData(dbContext);
+        
+        var departamentos = dbContext.Departamentos
+            .Include(d => d.Funcionarios)
+            .Where(d =>  d.Id < 3)
+            .AsSplitQuery()
+            .AsSingleQuery()
+            .ToList();
+
+        foreach (var departamento in departamentos)
+        {
+            Console.WriteLine(departamento);
+
+            foreach (var funcionario in departamento.Funcionarios)
+            {
+                Console.WriteLine("Funcionário:" + funcionario);
+            }
+        }
+    }
+    
     public static void ConsultaComTAG()
     {
         using var dbContext = new ApplicationDbContext();

@@ -3,10 +3,10 @@
 using System.Diagnostics;
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
+using DevIO.EfCore.Dominando.Samples;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using Utils = DevIO.EfCore.Dominando.Services.Utils;
 
 // EnsureCreatedAndDeleted();
 // GapDoEnsureCreated();
@@ -27,21 +27,8 @@ using Utils = DevIO.EfCore.Dominando.Services.Utils;
 // LoadingTypesSamples.CarregamentoExplicito();
 // LoadingTypesSamples.CarregamentoLento();
 
-FiltroGlobal();
+QuerySamples.DivisaoConsultas();
 return;
-
-static void FiltroGlobal()
-{
-    using var dbContext = new ApplicationDbContext();
-    Utils.SetupData(dbContext);
-    
-    var departamentos = dbContext.Departamentos.Where(d => d.Id > 0).ToList();
-
-    foreach (var departamento in departamentos)
-    {
-        Console.WriteLine(departamento);
-    }
-}
 
 static void EnsureCreatedAndDeleted()
 {
