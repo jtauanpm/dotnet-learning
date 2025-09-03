@@ -13,7 +13,8 @@ public class ApplicationDbContext : DbContext
     {
         var connString = Configuration.Configuration.GetConfiguration()["ConnectionStrings:Dev_IO_EfCore_Dominando"];
 
-        optionsBuilder.UseSqlServer(connString)
+        optionsBuilder.UseSqlServer(connString, 
+                builder => builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
             .EnableSensitiveDataLogging()
             // .UseLazyLoadingProxies()
             .LogTo(Console.WriteLine, LogLevel.Information);
