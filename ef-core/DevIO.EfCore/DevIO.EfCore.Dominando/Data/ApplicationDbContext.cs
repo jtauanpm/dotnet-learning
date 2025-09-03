@@ -25,6 +25,6 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
+        // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
     }
 }
