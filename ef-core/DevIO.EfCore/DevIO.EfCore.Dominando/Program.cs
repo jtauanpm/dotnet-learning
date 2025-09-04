@@ -1,33 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
-using DevIO.EfCore.Dominando.Samples;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-// EnsureCreatedAndDeleted();
-// GapDoEnsureCreated();
-// HealthCheckBancoDeDados();
-// GerenciarEstadoDaConexao(false);
-// GerenciarEstadoDaConexao(true);
-// SqlInjection();
-
-// MigrationManagementSamples.MigracoesPendentes();
-// MigrationManagementSamples.AplicandoMigracaoEmTempoDeExecucao();
-// MigrationManagementSamples.MigracoesPendentes();
-// MigrationManagementSamples.TodasMigracoes();
-// MigrationManagementSamples.MigracoesJaAplicadas();
-
-// ScriptGeralBancoDeDados();
-
-// LoadingTypesSamples.CarregamentoAdiantado();
-// LoadingTypesSamples.CarregamentoExplicito();
-// LoadingTypesSamples.CarregamentoLento();
-
-QuerySamples.DivisaoConsultas();
 return;
 
 static void EnsureCreatedAndDeleted()
