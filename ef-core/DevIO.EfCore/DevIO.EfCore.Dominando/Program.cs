@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
+using DevIO.EfCore.Dominando.Samples;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
+ProcedureSamples.ConsultaViaProcedure();
 return;
 
 static void EnsureCreatedAndDeleted()
