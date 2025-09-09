@@ -6,8 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-ProcedureSamples.ConsultaViaProcedure();
+ConsultarDepartamentos();
 return;
+
+static void ConsultarDepartamentos()
+{
+    using var db = new ApplicationDbContext();
+    var departamentos = db.Departamentos.Where(d => d.Id > 0).ToArray();
+}
 
 static void EnsureCreatedAndDeleted()
 {
