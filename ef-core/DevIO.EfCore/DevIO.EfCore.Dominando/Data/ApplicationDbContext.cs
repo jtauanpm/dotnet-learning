@@ -18,10 +18,11 @@ public class ApplicationDbContext : DbContext
         // optionsBuilder.UseSqlServer(connString, builder => builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
         optionsBuilder.UseSqlServer(connString)
             .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
             // .UseLazyLoadingProxies()
             // .LogTo(Console.WriteLine, new [] {CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted},
             //     LogLevel.Information, DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
-            .LogTo(_writer.WriteLine, LogLevel.Information);
+            // .LogTo(_writer.WriteLine, LogLevel.Information);
         
         base.OnConfiguring(optionsBuilder);
     }
