@@ -1,13 +1,52 @@
 ﻿using System.Diagnostics;
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
-using DevIO.EfCore.Dominando.Samples;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-ConsultarDepartamentos();
+TempoComandoGeral();
 return;
+
+static void ExecutarEstrategiaResiliencia()
+{
+    using var db = new ApplicationDbContext();
+
+    var strategy = db.Database.CreateExecutionStrategy();
+    strategy.Execute(() =>
+    {
+        using var transaction = db.Database.BeginTransaction();
+
+        db.Departamentos.Add(new Departamento { Descricao = "Departamento Transacao" });
+        db.SaveChanges();
+
+        transaction.Commit();
+    });
+}
+
+static void TempoComandoGeral()
+{
+    using var db = new ApplicationDbContext();
+    db.Database.SetCommandTimeout(10);
+    db.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:07';SELECT 1");
+}
+
+static void BatchOperation()
+{
+    using var db = new ApplicationDbContext();
+
+    for (int i = 0; i < 50; i++)
+    {
+        db.Departamentos.Add(new Departamento
+        {
+            Descricao = $"Departamento {i}",
+            Ativo = true,
+            Excluido = false
+        });
+    }
+
+    db.SaveChanges();
+}
 
 static void ConsultarDepartamentos()
 {

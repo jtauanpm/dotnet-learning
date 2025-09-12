@@ -16,9 +16,11 @@ public class ApplicationDbContext : DbContext
         var connString = Configuration.Configuration.GetConfiguration()["ConnectionStrings:Dev_IO_EfCore_Dominando"];
 
         // optionsBuilder.UseSqlServer(connString, builder => builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-        optionsBuilder.UseSqlServer(connString)
+        optionsBuilder.UseSqlServer(connString, options => 
+                options.MaxBatchSize(100).EnableRetryOnFailure(2, TimeSpan.FromSeconds(1), null))
             .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+            .EnableDetailedErrors()
+            .LogTo(Console.WriteLine, LogLevel.Information);
             // .UseLazyLoadingProxies()
             // .LogTo(Console.WriteLine, new [] {CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted},
             //     LogLevel.Information, DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
