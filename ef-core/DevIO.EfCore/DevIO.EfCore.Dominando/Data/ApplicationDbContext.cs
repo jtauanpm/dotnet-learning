@@ -37,8 +37,12 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
+        
+        modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
+        modelBuilder.Entity<Departamento>().Property(d => d.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+        
         base.OnModelCreating(modelBuilder);
 
-        // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
     }
 }
