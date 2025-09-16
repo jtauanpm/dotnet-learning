@@ -7,9 +7,10 @@ namespace DevIO.EfCore.Dominando.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    private readonly StreamWriter _writer = new("log_ef_core.txt", append: true);
+    // private readonly StreamWriter _writer = new("log_ef_core.txt", append: true);
     public DbSet<Departamento> Departamentos { get; set; }
     public DbSet<Funcionario> Funcionarios { get; set; }
+    public DbSet<Estado> Estados { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -29,27 +30,25 @@ public class ApplicationDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
-    public override void Dispose()
-    {
-        base.Dispose();
-        _writer.Dispose();
-    }
+    // public override void Dispose()
+    // {
+    //     base.Dispose();
+    //     _writer.Dispose();
+    // }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
         
+        #region Collations
+
         // modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
         // modelBuilder.Entity<Departamento>().Property(d => d.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
-        modelBuilder.HasSequence<int>("MinhaSequencia", "sequencias")
-            .StartsAt(1)
-            .IncrementsBy(2)
-            .HasMin(1)
-            .HasMax(10)
-            .IsCyclic();
+        #endregion
         
-        modelBuilder.Entity<Departamento>().Property(d => d.Id).HasDefaultValueSql("NEXT VALUE FOR sequencias.MinhaSequencia");
+        modelBuilder.Entity<Estado>()
+            .HasData(new Estado {Id = 1, Nome = "São Paulo"}, new Estado {Id = 2, Nome = "Paraíba"});
         
         base.OnModelCreating(modelBuilder);
     }
