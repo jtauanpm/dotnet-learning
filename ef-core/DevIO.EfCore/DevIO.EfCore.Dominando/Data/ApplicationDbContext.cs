@@ -39,10 +39,18 @@ public class ApplicationDbContext : DbContext
     {
         // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
         
-        modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
-        modelBuilder.Entity<Departamento>().Property(d => d.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+        // modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
+        // modelBuilder.Entity<Departamento>().Property(d => d.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
+        modelBuilder.HasSequence<int>("MinhaSequencia", "sequencias")
+            .StartsAt(1)
+            .IncrementsBy(2)
+            .HasMin(1)
+            .HasMax(10)
+            .IsCyclic();
+        
+        modelBuilder.Entity<Departamento>().Property(d => d.Id).HasDefaultValueSql("NEXT VALUE FOR sequencias.MinhaSequencia");
         
         base.OnModelCreating(modelBuilder);
-
     }
 }
