@@ -71,6 +71,14 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Estado>()
             .HasData(new Estado {Id = 1, Nome = "São Paulo"}, new Estado {Id = 2, Nome = "Paraíba"});
+
+        #region Schemas
+
+        modelBuilder.HasDefaultSchema("cadastro");
+        modelBuilder.Entity<Estado>()
+            .ToTable("Estados", "SegundoEsquema");
+
+        #endregion
         
         base.OnModelCreating(modelBuilder);
     }
