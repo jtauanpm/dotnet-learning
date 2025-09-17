@@ -47,6 +47,28 @@ public class ApplicationDbContext : DbContext
 
         #endregion
         
+        #region Sequences
+        // modelBuilder.HasSequence<int>("MinhaSequencia", "sequencias")
+        //     .StartsAt(1)
+        //     .IncrementsBy(2)
+        //     .HasMin(1)
+        //     .HasMax(10)
+        //     .IsCyclic();
+        //
+        // modelBuilder.Entity<Departamento>().Property(d => d.Id).HasDefaultValueSql("NEXT VALUE FOR sequencias.MinhaSequencia");
+        #endregion
+
+        #region Index
+
+        // modelBuilder.Entity<Departamento>()
+        //     .HasIndex(d => new { d.Descricao, d.Ativo })
+        //     .HasDatabaseName("idx_meu_indice_composto")
+        //     .HasFilter("Descricao IS NOT NULL")
+        //     .HasFillFactor(80)
+        //     .IsUnique();
+
+        #endregion
+
         modelBuilder.Entity<Estado>()
             .HasData(new Estado {Id = 1, Nome = "São Paulo"}, new Estado {Id = 2, Nome = "Paraíba"});
         
