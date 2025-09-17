@@ -1,6 +1,7 @@
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 
 namespace DevIO.EfCore.Dominando.Data;
@@ -74,9 +75,22 @@ public class ApplicationDbContext : DbContext
 
         #region Schemas
 
-        modelBuilder.HasDefaultSchema("cadastro");
-        modelBuilder.Entity<Estado>()
-            .ToTable("Estados", "SegundoEsquema");
+        // modelBuilder.HasDefaultSchema("cadastro");
+        // modelBuilder.Entity<Estado>()
+        //     .ToTable("Estados", "SegundoEsquema");
+
+        #endregion
+
+        #region Converters
+
+        // var converter = new ValueConverter<ContractType, string>(p => p.ToString(), p => Enum.Parse<ContractType>(p));
+        
+        var builtInConverter = new EnumToStringConverter<ContractType>();
+
+        modelBuilder.Entity<Funcionario>()
+            .Property(f => f.ContractType)
+            .HasConversion(builtInConverter);
+            // .HasConversion(p => p.ToString(), p => Enum.Parse<ContractType>(p));
 
         #endregion
         
