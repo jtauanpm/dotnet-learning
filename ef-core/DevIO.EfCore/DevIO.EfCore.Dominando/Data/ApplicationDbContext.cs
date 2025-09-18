@@ -98,6 +98,8 @@ public class ApplicationDbContext : DbContext
                 .HasConversion(new ConversorCustomizado());
 
         #endregion
+
+        modelBuilder.Entity<Departamento>().Property<DateTime>("UltimaAtualizacao");
         
         base.OnModelCreating(modelBuilder);
     }
