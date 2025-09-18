@@ -1,3 +1,4 @@
+using DevIO.EfCore.Dominando.Converters;
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -91,6 +92,10 @@ public class ApplicationDbContext : DbContext
             .Property(f => f.ContractType)
             .HasConversion(builtInConverter);
             // .HasConversion(p => p.ToString(), p => Enum.Parse<ContractType>(p));
+
+            modelBuilder.Entity<Funcionario>()
+                .Property(f => f.Gender)
+                .HasConversion(new ConversorCustomizado());
 
         #endregion
         
