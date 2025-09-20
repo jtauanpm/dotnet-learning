@@ -101,6 +101,15 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Departamento>().Property<DateTime>("UltimaAtualizacao");
         
+        modelBuilder.Entity<Cliente>(typeBuilder =>
+        {
+            typeBuilder.OwnsOne(c => c.Endereco, builder =>
+            {
+                builder.Property(e => e.Bairro).HasColumnName("Bairro");
+                builder.ToTable("Endereco"); //Separa o relacionamento em outra tabela
+            });
+        });
+        
         base.OnModelCreating(modelBuilder);
     }
 }
