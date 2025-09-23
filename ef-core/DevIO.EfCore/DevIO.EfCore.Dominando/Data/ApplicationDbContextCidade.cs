@@ -1,3 +1,4 @@
+using DevIO.EfCore.Dominando.Configurations;
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,7 @@ public class ApplicationDbContextCidade : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connString = Configuration.Configuration.GetConfiguration()["ConnectionStrings:Dev_IO_EfCore_Dominando"];
+        var connString = Configuration.GetConfiguration()["ConnectionStrings:Dev_IO_EfCore_Dominando"];
 
         optionsBuilder.UseSqlServer(connString)
             .EnableSensitiveDataLogging()

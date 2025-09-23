@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace DevIO.EfCore.Dominando.Configuration;
+namespace DevIO.EfCore.Dominando.Configurations;
 
 public static class Configuration
 {
