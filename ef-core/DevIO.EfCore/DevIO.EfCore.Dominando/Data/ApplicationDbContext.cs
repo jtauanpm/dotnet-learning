@@ -1,3 +1,5 @@
+using System.Reflection;
+using DevIO.EfCore.Dominando.Configurations;
 using DevIO.EfCore.Dominando.Converters;
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +18,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connString = Configuration.Configuration.GetConfiguration()["ConnectionStrings:Dev_IO_EfCore_Dominando"];
+        var connString = Configuration.GetConfiguration()["ConnectionStrings:Dev_IO_EfCore_Dominando"];
 
         // optionsBuilder.UseSqlServer(connString, builder => builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
         optionsBuilder.UseSqlServer(connString, options => 
@@ -100,15 +102,8 @@ public class ApplicationDbContext : DbContext
         #endregion
 
         modelBuilder.Entity<Departamento>().Property<DateTime>("UltimaAtualizacao");
-        
-        modelBuilder.Entity<Cliente>(typeBuilder =>
-        {
-            typeBuilder.OwnsOne(c => c.Endereco, builder =>
-            {
-                builder.Property(e => e.Bairro).HasColumnName("Bairro");
-                builder.ToTable("Endereco"); //Separa o relacionamento em outra tabela
-            });
-        });
+
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
         base.OnModelCreating(modelBuilder);
     }
