@@ -13,5 +13,10 @@ public class EstadoConfiguration : IEntityTypeConfiguration<Estado>
             .HasForeignKey<Governador>(g => g.EstadoId);
 
         builder.Navigation(e => e.Governador).AutoInclude();
+
+        builder.HasMany(e => e.Cidades)
+            .WithOne()
+            .IsRequired(false);
+        // .OnDelete();
     }
 }

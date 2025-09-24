@@ -6,6 +6,8 @@ public class Estado
     public string Nome { get; set; }
 
     public Governador Governador { get; set; }
+
+    public ICollection<Cidade> Cidades { get; set; }
 }
 
 public class Governador

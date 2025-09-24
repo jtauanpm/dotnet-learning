@@ -1,8 +1,7 @@
-namespace DevIO.EfCore.Dominando.Domain
+namespace DevIO.EfCore.Dominando.Domain;
+
+public class Cidade
 {
-    public class Cidade
-    {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-    }
+    public int Id { get; set; }
+    public string Nome { get; set; }
 }
