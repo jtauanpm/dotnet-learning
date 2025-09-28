@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Departamento> Departamentos { get; set; }
     public DbSet<Funcionario> Funcionarios { get; set; }
     public DbSet<Estado> Estados { get; set; }
+    public DbSet<Dictionary<string, object>> Configuracoes => Set<Dictionary<string, object>>("Configuracoes");
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -104,6 +105,19 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Departamento>().Property<DateTime>("UltimaAtualizacao");
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        modelBuilder.SharedTypeEntity<Dictionary<string, object>>("Configuracoes", c =>
+        {
+            c.Property<int>("Id");
+
+            c.Property<string>("Chave")
+                .HasColumnType("VARCHAR(40)")
+                .IsRequired();
+
+            c.Property<string>("Valor")
+                .HasColumnType("VARCHAR(255)")
+                .IsRequired();
+        });
         
         base.OnModelCreating(modelBuilder);
     }
