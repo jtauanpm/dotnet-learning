@@ -5,8 +5,64 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-TempoComandoGeral();
+InsertShadowProperties();
+ReadShadowProperties();
 return;
+
+static void ReadShadowProperties()
+{
+    using var db = new ApplicationDbContext();
+    var departamentos = db.Departamentos
+        .Where(d => EF.Property<DateTime>(d, "UltimaAtualizacao") < DateTime.Now)
+        .ToArray();
+}
+
+static void InsertShadowProperties()
+{
+    using var db = new ApplicationDbContext();
+    EnsureDeletedAndCreate();
+
+    var dep = new Departamento
+    {
+        Descricao = "Description"
+    };
+
+    db.Departamentos.Add(dep);
+    db.Entry(dep).Property("UltimaAtualizacao").CurrentValue = DateTime.Now;
+    
+    db.SaveChanges();
+}
+
+static void InsertFuncionario()
+{
+    using var db = new ApplicationDbContext();
+
+    db.Departamentos.Add(new Departamento
+    {
+        Descricao = "desc",
+        Ativo = true
+    });
+    
+    db.Funcionarios.Add(new Funcionario
+    {
+        Nome = "Funcionario",
+        DepartamentoId = 1,
+        CPF = "",
+        RG = "",
+        ContractType = ContractType.CLT,
+        Gender = Gender.Male
+    });
+    db.SaveChanges();
+
+    db.Funcionarios.ToList().ForEach(Console.WriteLine);
+}
+
+static void PrintarCreateDbScript()
+{
+    using var dbContext = new ApplicationDbContext();
+    var script = dbContext.Database.GenerateCreateScript();
+    Console.WriteLine(script);
+}
 
 static void ExecutarEstrategiaResiliencia()
 {
@@ -60,6 +116,14 @@ static void EnsureCreatedAndDeleted()
     db.Database.EnsureCreated();
 
     db.Database.EnsureDeleted();
+}
+
+static void EnsureDeletedAndCreate()
+{
+    using var db = new ApplicationDbContext();
+    db.Database.EnsureDeleted();
+    
+    db.Database.EnsureCreated();
 }
 
 static void GapDoEnsureCreated()
