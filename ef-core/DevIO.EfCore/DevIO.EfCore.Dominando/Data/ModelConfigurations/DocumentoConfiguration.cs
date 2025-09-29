@@ -2,7 +2,7 @@ using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DevIO.EfCore.Dominando.Configurations;
+namespace DevIO.EfCore.Dominando.Data.ModelConfigurations;
 
 public class DocumentoConfiguration : IEntityTypeConfiguration<Documento>
 {
