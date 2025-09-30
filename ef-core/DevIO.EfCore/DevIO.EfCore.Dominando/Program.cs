@@ -1,13 +1,65 @@
 ﻿using System.Diagnostics;
+using System.Transactions;
 using DevIO.EfCore.Dominando.Data;
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-InsertShadowProperties();
-ReadShadowProperties();
+UsingCustomTransactions();
 return;
+
+static void UsingCustomTransactions()
+{
+    EnsureDeletedAndCreate();
+    
+    using var db = new ApplicationDbContext();
+    
+    var strategy = db.Database.CreateExecutionStrategy();
+
+    strategy.Execute(() =>
+    {
+        using var transaction = db.Database.BeginTransaction();
+
+        try
+        {
+            // tudo que precisa estar no retry + transação
+            db.Departamentos.Add(new Departamento { Descricao = "desc", Ativo = true });
+            db.SaveChanges();
+            
+            transaction.CreateSavepoint("save_point");
+
+            var dep = db.Departamentos.First();
+            dep.Descricao = "desc updated";
+            db.SaveChanges();
+        
+            transaction.Commit();
+        }
+        catch (Exception e)
+        {
+            transaction.RollbackToSavepoint("save_point");
+        }
+    });
+
+    var transactionOptions = new TransactionOptions
+    {
+        IsolationLevel = IsolationLevel.ReadCommitted
+    };
+    
+    using (var scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+    {
+        // Ações
+        
+        scope.Complete();
+    }
+}
+
+static void SimpleRead()
+{
+    EnsureDeletedAndCreate();
+    using var db = new ApplicationDbContext();
+    var departamentos = db.Departamentos.ToList();
+}
 
 static void ReadShadowProperties()
 {
