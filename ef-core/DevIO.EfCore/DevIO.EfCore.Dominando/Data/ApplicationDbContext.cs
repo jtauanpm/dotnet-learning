@@ -2,6 +2,7 @@ using System.Reflection;
 using DevIO.EfCore.Dominando.Configurations;
 using DevIO.EfCore.Dominando.Converters;
 using DevIO.EfCore.Dominando.Domain;
+using DevIO.EfCore.Dominando.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -16,6 +17,10 @@ public class ApplicationDbContext : DbContext
     public DbSet<Funcionario> Funcionarios { get; set; }
     public DbSet<Estado> Estados { get; set; }
     public DbSet<Dictionary<string, object>> Configuracoes => Set<Dictionary<string, object>>("Configuracoes");
+    
+    public DbSet<Atributo> Atributos { get; set; }
+    
+    // public DbSet<Aeroporto> Aeroportos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -26,7 +31,8 @@ public class ApplicationDbContext : DbContext
                 options.MaxBatchSize(100).EnableRetryOnFailure(2, TimeSpan.FromSeconds(1), null))
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors()
-            .LogTo(Console.WriteLine, LogLevel.Information);
+            .LogTo(Console.WriteLine, LogLevel.Information)
+            .AddInterceptors(new InterceptadorDeComandos(), new InterceptadorDeConexao(), new InterceptadorPersistencia());
             // .UseLazyLoadingProxies()
             // .LogTo(Console.WriteLine, new [] {CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted},
             //     LogLevel.Information, DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
