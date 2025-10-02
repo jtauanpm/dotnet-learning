@@ -6,8 +6,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-UsingCustomTransactions();
+UsingBuiltInFunction();
 return;
+
+static void UsingBuiltInFunction()
+{
+    using var db = new ApplicationDbContext();
+    
+    var result = db.Departamentos.Select(d => ApplicationDbContext.Left(d.Descricao, 4)).First();
+    Console.WriteLine(result);
+}
 
 static void UsingCustomTransactions()
 {
