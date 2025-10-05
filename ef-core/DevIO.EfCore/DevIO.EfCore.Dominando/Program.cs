@@ -56,8 +56,6 @@ static void UsingCustomTransactions()
     
     using (var scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
     {
-        // Ações
-        
         scope.Complete();
     }
 }
