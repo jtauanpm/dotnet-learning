@@ -49,6 +49,8 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.RegisterFunctions();
+            
         // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
         
         #region Collations
@@ -126,11 +128,5 @@ public class ApplicationDbContext : DbContext
         });
         
         base.OnModelCreating(modelBuilder);
-    }
-
-    [DbFunction(name: "LEFT", IsBuiltIn = true)]
-    public static string Left(string dados, int quantidade)
-    {
-        throw new NotImplementedException();
     }
 }

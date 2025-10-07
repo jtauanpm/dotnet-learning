@@ -13,7 +13,7 @@ static void UsingBuiltInFunction()
 {
     using var db = new ApplicationDbContext();
     
-    var result = db.Departamentos.Select(d => ApplicationDbContext.Left(d.Descricao, 4)).First();
+    var result = db.Departamentos.Select(d => UserDefinedFunctions.Left(d.Descricao, 4)).First();
     Console.WriteLine(result);
 }
 
