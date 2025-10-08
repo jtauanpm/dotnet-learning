@@ -6,8 +6,30 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-UsingBuiltInFunction();
+CreateUpperUserDefinedFunction();
 return;
+
+static void CreateUpperUserDefinedFunction()
+{
+    using var db = new ApplicationDbContext();
+
+    db.Database.ExecuteSqlRaw(@"
+        CREATE FUNCTION ConverterParaLetrasMaiusculas(@data VARCHAR(100))
+        RETURNS VARCHAR(100)
+        BEGIN
+            RETURN UPPER(@data)
+        END");
+
+    var result = db.Departamentos.Select(d =>
+            UserDefinedFunctions
+                .ConverterParaLetrasMaiusculas(d.Descricao))
+        .ToList();
+
+    foreach (var desc in result)
+    {
+        Console.WriteLine(desc);
+    }
+}
 
 static void UsingBuiltInFunction()
 {

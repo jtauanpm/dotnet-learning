@@ -9,6 +9,11 @@ public static class UserDefinedFunctions
     {
         throw new NotImplementedException();
     }
+    
+    public static string ConverterParaLetrasMaiusculas(string dados)
+    {
+        throw new NotImplementedException();
+    }
 
     public static void RegisterFunctions(this ModelBuilder modelBuilder)
     {

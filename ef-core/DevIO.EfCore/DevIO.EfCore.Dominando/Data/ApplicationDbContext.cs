@@ -50,6 +50,17 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterFunctions();
+        
+        // Register functions by FluentAPI
+        modelBuilder
+            .HasDbFunction(typeof(UserDefinedFunctions)
+                .GetMethod(nameof(UserDefinedFunctions.Left),
+                    new[] { typeof(string), typeof(int) })!);
+        
+        modelBuilder
+            .HasDbFunction(typeof(UserDefinedFunctions)
+                .GetMethod(nameof(UserDefinedFunctions.ConverterParaLetrasMaiusculas),
+                    new[] { typeof(string) })!);
             
         // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
         
