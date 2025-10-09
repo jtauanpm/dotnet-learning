@@ -5,6 +5,7 @@ using DevIO.EfCore.Dominando.Domain;
 using DevIO.EfCore.Dominando.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 
@@ -55,12 +56,29 @@ public class ApplicationDbContext : DbContext
         modelBuilder
             .HasDbFunction(typeof(UserDefinedFunctions)
                 .GetMethod(nameof(UserDefinedFunctions.Left),
-                    new[] { typeof(string), typeof(int) })!);
+                    new[] { typeof(string), typeof(int) })!)
+            .IsBuiltIn();
         
         modelBuilder
             .HasDbFunction(typeof(UserDefinedFunctions)
                 .GetMethod(nameof(UserDefinedFunctions.ConverterParaLetrasMaiusculas),
-                    new[] { typeof(string) })!);
+                    new[] { typeof(string) })!)
+            .HasName("ConverterParaLetrasMaiusculas");
+        
+        modelBuilder
+            .HasDbFunction(typeof(UserDefinedFunctions)
+                .GetMethod(nameof(UserDefinedFunctions.DateDiff),
+                    new[] { typeof(string) })!)
+            .HasName("DATEDIFF")
+            .HasTranslation(a =>
+            {
+                var args = a.ToList();
+                var constante = (SqlConstantExpression)args[0];
+                args[0] = new SqlFragmentExpression(constante.Value.ToString());
+
+                return new SqlFunctionExpression("DATEDIFF", args, false, new[] { false, false, false }, typeof(int),
+                    null);
+            });
             
         // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
         

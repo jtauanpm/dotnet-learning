@@ -14,6 +14,11 @@ public static class UserDefinedFunctions
     {
         throw new NotImplementedException();
     }
+    
+    public static string DateDiff(string identifier, DateTime initDate, DateTime finalDate)
+    {
+        throw new NotImplementedException();
+    }
 
     public static void RegisterFunctions(this ModelBuilder modelBuilder)
     {
