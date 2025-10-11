@@ -196,7 +196,7 @@ static void ConsultarDados()
     // Method syntax
     var consultaPorMetodo = db.Clientes
         .Where(c => c.Id > 0)
-        // .AsNoTracking() // impede o rastreamento de dados em memória do EFCore
+        .AsNoTrackingWithIdentityResolution() // impede o rastreamento de dados em memória do EFCore
         .OrderBy(c => c.Id)
         .ToList();
     
