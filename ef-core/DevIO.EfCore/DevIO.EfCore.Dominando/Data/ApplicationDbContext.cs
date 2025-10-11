@@ -31,7 +31,7 @@ public class ApplicationDbContext : DbContext
         optionsBuilder.UseSqlServer(connString, options => 
                 options.MaxBatchSize(100).EnableRetryOnFailure(2, TimeSpan.FromSeconds(1), null))
             .EnableSensitiveDataLogging()
-            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
+            // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
             .EnableDetailedErrors()
             .LogTo(Console.WriteLine, LogLevel.Information)
             .AddInterceptors(new InterceptadorDeComandos(), new InterceptadorDeConexao(), new InterceptadorPersistencia());
@@ -69,7 +69,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder
             .HasDbFunction(typeof(UserDefinedFunctions)
                 .GetMethod(nameof(UserDefinedFunctions.DateDiff),
-                    new[] { typeof(string) })!)
+                    [typeof(string), typeof(DateTime), typeof(DateTime)])!)
             .HasName("DATEDIFF")
             .HasTranslation(a =>
             {

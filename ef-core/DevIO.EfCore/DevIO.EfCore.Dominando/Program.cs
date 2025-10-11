@@ -6,8 +6,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-CreateUpperUserDefinedFunction();
+ConsultaProjetada();
 return;
+
+static void ConsultaProjetada()
+{
+    using var dbContext = new ApplicationDbContext();
+
+    var departamentos = dbContext.Departamentos.Select(d => d.Descricao).ToArray();
+    
+    var memory = (Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024) + " MB";
+    
+    Console.WriteLine(memory);
+}
 
 static void CreateUpperUserDefinedFunction()
 {
