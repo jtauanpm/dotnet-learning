@@ -52,7 +52,8 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterFunctions();
-        
+
+        #region UDFs
         // Register functions by FluentAPI
         modelBuilder
             .HasDbFunction(typeof(UserDefinedFunctions)
@@ -80,6 +81,8 @@ public class ApplicationDbContext : DbContext
                 return new SqlFunctionExpression("DATEDIFF", args, false, new[] { false, false, false }, typeof(int),
                     null);
             });
+
+        #endregion
             
         // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
         
