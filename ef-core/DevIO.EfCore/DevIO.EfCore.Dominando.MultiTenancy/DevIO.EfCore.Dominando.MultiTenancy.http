@@ -1,0 +1,6 @@
+@DevIO.EfCore.Dominando.MultiTenancy_HostAddress = http://localhost:5135
+
+GET {{DevIO.EfCore.Dominando.MultiTenancy_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
