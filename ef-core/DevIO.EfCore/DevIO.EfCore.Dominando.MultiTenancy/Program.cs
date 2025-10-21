@@ -1,5 +1,7 @@
 using DevIO.EfCore.Dominando.MultiTenancy.EFCore;
 using DevIO.EfCore.Dominando.MultiTenancy.Entities;
+using DevIO.EfCore.Dominando.MultiTenancy.Middlewares;
+using DevIO.EfCore.Dominando.MultiTenancy.Providers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,8 @@ builder.Services.AddDbContext<MultiTenancyDbContext>(o =>
     .EnableSensitiveDataLogging()
     .LogTo(Console.WriteLine));
 
+builder.Services.AddScoped<TenantDataProvider>();
+
 var app = builder.Build();
 
 DatabaseInitialize(app);
@@ -29,6 +33,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<TenantResolverMiddleware>();
 
 app.MapControllers();
 
