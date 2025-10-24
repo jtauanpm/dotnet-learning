@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevIO.EfCore.Dominando.MultiTenancy.Migrations
 {
     [DbContext(typeof(MultiTenancyDbContext))]
-    [Migration("20251021232312_Add_Tenant")]
+    [Migration("20251024003142_Add_Tenant")]
     partial class Add_Tenant
     {
         /// <inheritdoc />
