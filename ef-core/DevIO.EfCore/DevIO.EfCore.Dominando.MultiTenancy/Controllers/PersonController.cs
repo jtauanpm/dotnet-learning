@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DevIO.EfCore.Dominando.MultiTenancy.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("{tenant}/[controller]")]
 public class PersonController : ControllerBase
 {
     private readonly ILogger<PersonController> _logger;
