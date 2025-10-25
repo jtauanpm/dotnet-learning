@@ -9,16 +9,16 @@ public class MultiTenancyDbContext : DbContext
     public DbSet<Person> People { get; set; }
     public DbSet<Product> Products { get; set; }
     
-    public readonly TenantDataProvider TenantDataProvider;
+    // public readonly TenantDataProvider TenantDataProvider;
 
-    public MultiTenancyDbContext(DbContextOptions<MultiTenancyDbContext> options, TenantDataProvider tenantDataProvider) : base(options)
+    public MultiTenancyDbContext(DbContextOptions<MultiTenancyDbContext> options/*, TenantDataProvider tenantDataProvider*/ ) : base(options)
     {
-        TenantDataProvider = tenantDataProvider;
+        // TenantDataProvider = tenantDataProvider;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema(TenantDataProvider.TenantId);
+        // modelBuilder.HasDefaultSchema(TenantDataProvider.TenantId);
         
         // modelBuilder.Entity<Person>().HasData(
         //     new Person { Id = 1, Name = "Person 1", TenantId = "tenant-1" },
