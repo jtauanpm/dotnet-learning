@@ -13,6 +13,15 @@ namespace DevIO.EfCore.Dominando.Data;
 
 public class ApplicationDbContext : DbContext
 {
+    public ApplicationDbContext() : base()
+    {
+    }
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+        
+    }
+    
     // private readonly StreamWriter _writer = new("log_ef_core.txt", append: true);
     public DbSet<Departamento> Departamentos { get; set; }
     public DbSet<Funcionario> Funcionarios { get; set; }
