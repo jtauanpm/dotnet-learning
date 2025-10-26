@@ -1,10 +1,12 @@
 using System.Reflection;
 using DevIO.EfCore.Dominando.Configurations;
 using DevIO.EfCore.Dominando.Converters;
+using DevIO.EfCore.Dominando.Data.QuerySqlGenerator;
 using DevIO.EfCore.Dominando.Domain;
 using DevIO.EfCore.Dominando.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
@@ -43,7 +45,8 @@ public class ApplicationDbContext : DbContext
             // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
             .EnableDetailedErrors()
             .LogTo(Console.WriteLine, LogLevel.Information)
-            .AddInterceptors(new InterceptadorDeComandos(), new InterceptadorDeConexao(), new InterceptadorPersistencia());
+            // .AddInterceptors(new InterceptadorDeComandos(), new InterceptadorDeConexao(), new InterceptadorPersistencia())
+            .ReplaceService<IQuerySqlGeneratorFactory, CustomSqlServerQueryGeneratorFactory>();
             // .UseLazyLoadingProxies()
             // .LogTo(Console.WriteLine, new [] {CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted},
             //     LogLevel.Information, DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
