@@ -39,14 +39,14 @@ public class ApplicationDbContext : DbContext
         var connString = Configuration.GetConfiguration()["ConnectionStrings:Dev_IO_EfCore_Dominando"];
 
         // optionsBuilder.UseSqlServer(connString, builder => builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-        optionsBuilder.UseSqlServer(connString, options => 
+        optionsBuilder.UseSqlServer(connString, options =>
                 options.MaxBatchSize(100).EnableRetryOnFailure(2, TimeSpan.FromSeconds(1), null))
             .EnableSensitiveDataLogging()
             // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
             .EnableDetailedErrors()
-            .LogTo(Console.WriteLine, LogLevel.Information)
+            .LogTo(Console.WriteLine, LogLevel.Information);
             // .AddInterceptors(new InterceptadorDeComandos(), new InterceptadorDeConexao(), new InterceptadorPersistencia())
-            .ReplaceService<IQuerySqlGeneratorFactory, CustomSqlServerQueryGeneratorFactory>();
+            // .ReplaceService<IQuerySqlGeneratorFactory, CustomSqlServerQueryGeneratorFactory>();
             // .UseLazyLoadingProxies()
             // .LogTo(Console.WriteLine, new [] {CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted},
             //     LogLevel.Information, DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);

@@ -1,13 +1,21 @@
 ﻿using System.Diagnostics;
 using System.Transactions;
 using DevIO.EfCore.Dominando.Data;
+using DevIO.EfCore.Dominando.Data.Diagnostics;
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-ConsultaProjetada();
+SimpleRead();
 return;
+
+static void AddDiagnosticListener()
+{
+    DiagnosticListener.AllListeners.Subscribe(new CustomInterceptorListener());
+    
+    SimpleRead();
+}
 
 static void ConsultaProjetada()
 {
