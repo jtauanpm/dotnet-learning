@@ -7,10 +7,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["DevIO.NSE.Identidade.API/DevIO.NSE.Identidade.API.csproj", "DevIO.NSE.Identidade.API/"]
-RUN dotnet restore "DevIO.NSE.Identidade.API/DevIO.NSE.Identidade.API.csproj"
+COPY ["src/services/DevIO.NSE.Identidade.API/DevIO.NSE.Identidade.API.csproj", "src/services/DevIO.NSE.Identidade.API/"]
+RUN dotnet restore "src/services/DevIO.NSE.Identidade.API/DevIO.NSE.Identidade.API.csproj"
 COPY . .
-WORKDIR "/src/DevIO.NSE.Identidade.API"
+WORKDIR "/src/src/services/DevIO.NSE.Identidade.API"
 RUN dotnet build "./DevIO.NSE.Identidade.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
