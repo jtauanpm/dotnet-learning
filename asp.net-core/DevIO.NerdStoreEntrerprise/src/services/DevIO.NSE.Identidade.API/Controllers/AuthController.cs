@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DevIO.NSE.Identidade.API.Controllers;
 
 [ApiController]
+[Route("api/identidade")]
 public class AuthController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
