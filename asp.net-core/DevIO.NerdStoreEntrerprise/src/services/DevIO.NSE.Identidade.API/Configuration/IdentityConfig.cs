@@ -13,23 +13,18 @@ public static class IdentityConfig
     public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
         services.AddDefaultIdentity<IdentityUser>()
             .AddRoles<IdentityRole>()
             .AddErrorDescriber<IdentityMensagensPortugues>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-
         // JWT
-
-        var appSettingsSection = configuration.GetSection("AppSettings");
+        var appSettingsSection = configuration.GetSection("JwtSettings");
         services.Configure<AppSettings>(appSettingsSection);
 
         var appSettings = appSettingsSection.Get<AppSettings>();
-        var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+        var key = Encoding.ASCII.GetBytes(appSettings.Segredo);
 
         services.AddAuthentication(options =>
         {
@@ -45,7 +40,7 @@ public static class IdentityConfig
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidAudience = appSettings.ValidoEm,
+                ValidAudience = appSettings.Audiencia,
                 ValidIssuer = appSettings.Emissor
             };
         });
