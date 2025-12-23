@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Transactions;
 using DevIO.EfCore.Dominando.Data;
+using DevIO.EfCore.Dominando.Data.Abstractions;
 using DevIO.EfCore.Dominando.Data.Diagnostics;
 using DevIO.EfCore.Dominando.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-SimpleRead();
+DoAsyncEnumerable();
 return;
 
 static void AddDiagnosticListener()
@@ -101,11 +102,32 @@ static void UsingCustomTransactions()
     }
 }
 
-static void SimpleRead()
+static async Task DoAsyncEnumerable()
+{
+    EnsureDeletedAndCreate();
+    using var db = new ApplicationDbContext();
+    var asyncEnumerable = db.Departamentos.AsAsyncEnumerable();
+    
+    await foreach (var departamento in asyncEnumerable)
+    {
+        Console.WriteLine(departamento);
+    }
+}
+
+static async Task SimpleRead()
 {
     EnsureDeletedAndCreate();
     using var db = new ApplicationDbContext();
     var departamentos = db.Departamentos.ToList();
+}
+
+static async IAsyncEnumerable<int> GerarNumerosAsync()
+{
+    for (var i = 1; i <= 5; i++)
+    {
+        await Task.Delay(500);
+        yield return i;
+    }
 }
 
 static void ReadShadowProperties()
@@ -220,7 +242,7 @@ static void EnsureCreatedAndDeleted()
 static void EnsureDeletedAndCreate()
 {
     using var db = new ApplicationDbContext();
-    db.Database.EnsureDeleted();
+    // db.Database.EnsureDeleted();
     
     db.Database.EnsureCreated();
 }
