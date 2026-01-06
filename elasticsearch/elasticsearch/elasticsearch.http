@@ -1,0 +1,9 @@
+@elasticsearch_HostAddress = http://localhost:5145
+
+GET {{elasticsearch_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+PUT {{elasticsearch_HostAddress}}/indices/indice
+Accept: application/json
