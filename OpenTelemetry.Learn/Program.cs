@@ -1,6 +1,9 @@
 using System.Globalization;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using OpenTelemetry.Instrumentation.StackExchangeRedis;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -8,6 +11,7 @@ using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.OpenTelemetry;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +26,6 @@ builder.Host.UseSerilog((ctx, lc) => lc
     })
 );
 
-
 builder.Logging.AddOpenTelemetry(options =>
 {
     options
@@ -31,18 +34,24 @@ builder.Logging.AddOpenTelemetry(options =>
                 .AddService(serviceName))
         .AddConsoleExporter();
 });
+
+// builder.Services.AddRedis();
+
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing
         .AddAspNetCoreInstrumentation()
-        .AddConsoleExporter())
-    // .WithMetrics(metrics => metrics
-    //     .AddAspNetCoreInstrumentation()
-    //     .AddConsoleExporter()
-    // )
-    ;
+        .AddRedisInstrumentation()
+        .AddOtlpExporter()
+        .AddConsoleExporter());
+
+builder.Services.AddRedis();
 
 var app = builder.Build();
+
+var instrumentation = app.Services.GetRequiredService<StackExchangeRedisInstrumentation>();
+var connection = app.Services.GetRequiredService<IConnectionMultiplexer>();
+instrumentation.AddConnection(connection);
 
 string HandleRollDice([FromServices]ILogger<Program> logger, string? player)
 {
@@ -62,10 +71,47 @@ string HandleRollDice([FromServices]ILogger<Program> logger, string? player)
 
 app.MapGet("/rolldice/{player?}", HandleRollDice);
 
+app.MapGet("/cache", async (IDistributedCache cache) =>
+{
+    const string key = "time";
+
+    var value = await cache.GetStringAsync(key);
+    if (value == null)
+    {
+        value = DateTime.UtcNow.ToString("O");
+        await cache.SetStringAsync(
+            key,
+            value,
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30)
+            });
+    }
+
+    return value;
+});
+
 app.Run();
 return;
 
 int RollDice()
 {
     return Random.Shared.Next(1, 7);
+}
+
+public static class SetupExtensions
+{
+    public static IServiceCollection AddRedis(this IServiceCollection services)
+    {
+        var connection = ConnectionMultiplexer.Connect("localhost:6379");
+        services.TryAddSingleton<IConnectionMultiplexer>(connection);
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = "localhost:6379";
+            options.InstanceName = "myapp:";
+            options.ConnectionMultiplexerFactory = () => Task.FromResult<IConnectionMultiplexer>(connection);
+        });
+        
+        return services;
+    }
 }
