@@ -1,11 +1,9 @@
 using System.Globalization;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenTelemetry.Instrumentation.StackExchangeRedis;
 using OpenTelemetry.Logs;
-using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
@@ -21,8 +19,8 @@ builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.Console(LogEventLevel.Debug)
     .WriteTo.OpenTelemetry(options =>
     {
-        options.Endpoint = "http://localhost:4317";  // Pointing to the Collector
-        options.Protocol = OtlpProtocol.Grpc;         // Use gRPC to send logs
+        options.Endpoint = "http://localhost:4317";
+        options.Protocol = OtlpProtocol.Grpc;
     })
 );
 
@@ -35,8 +33,6 @@ builder.Logging.AddOpenTelemetry(options =>
         .AddConsoleExporter();
 });
 
-// builder.Services.AddRedis();
-
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing
@@ -48,10 +44,6 @@ builder.Services.AddOpenTelemetry()
 builder.Services.AddRedis();
 
 var app = builder.Build();
-
-var instrumentation = app.Services.GetRequiredService<StackExchangeRedisInstrumentation>();
-var connection = app.Services.GetRequiredService<IConnectionMultiplexer>();
-instrumentation.AddConnection(connection);
 
 string HandleRollDice([FromServices]ILogger<Program> logger, string? player)
 {
@@ -71,21 +63,20 @@ string HandleRollDice([FromServices]ILogger<Program> logger, string? player)
 
 app.MapGet("/rolldice/{player?}", HandleRollDice);
 
-app.MapGet("/cache", async (IDistributedCache cache) =>
+app.MapGet("/cache", async (IDistributedCache cache, [FromServices]IServiceProvider serviceProvider) =>
 {
+    serviceProvider.GetRequiredService<StackExchangeRedisInstrumentation>();
+    
     const string key = "time";
 
     var value = await cache.GetStringAsync(key);
     if (value == null)
     {
         value = DateTime.UtcNow.ToString("O");
-        await cache.SetStringAsync(
-            key,
-            value,
-            new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30)
-            });
+        await cache.SetStringAsync(key, value, new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30)
+        });
     }
 
     return value;
