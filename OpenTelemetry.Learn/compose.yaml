@@ -1,0 +1,7 @@
+﻿services:
+  opentelemetry.learn:
+    image: opentelemetry.learn
+    build:
+      context: .
+      dockerfile: Dockerfile
+

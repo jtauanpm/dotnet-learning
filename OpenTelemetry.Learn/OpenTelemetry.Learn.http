@@ -1,0 +1,6 @@
+@OpenTelemetry.Learn_HostAddress = http://localhost:5080
+
+GET {{OpenTelemetry.Learn_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

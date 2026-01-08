@@ -1,0 +1,7 @@
+@Hangfire.Learn_HostAddress = http://localhost:5225
+
+GET http://localhost:5225/weatherforecast/
+Accept: application/json
+
+###
+    
